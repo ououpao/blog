@@ -384,21 +384,21 @@ ECMAScript定义了9个操作数组的数组方法:
 要注意的是：在检索时会与数组的每一项进行全等的比较，也就是必须严格相等（===）。
 
 ```javascript
-    var nums = [1,2,3,4,5,4,3,2,1];
-    console.log(nums.indexOf(3)); // 2  索引为2
-    console.log(nums.lastIndexOf(3)) // 6 从后面开始找，索引为6;
-    
-    console.log(nums.indexOf(3,3)); // 6  从位置3开始向后找
-    console.log(nums.lastIndexOf(3,3)) // 2 从位置3开始向前找
-    
-    console.log(nums.indexOf(6)); // -1  没有找到
-    
-    var class= {name : 'ruanjian'};
-    var students = [{name : 'jozo'}];
-    console.log(students.indexOf(class)); //false  非严格相等(不是同一个对象)
-    
-    var school = [class];
-    console.log(school.indexOf(class);); //true 严格相等(同一个对象)
+var nums = [1,2,3,4,5,4,3,2,1];
+console.log(nums.indexOf(3)); // 2  索引为2
+console.log(nums.lastIndexOf(3)) // 6 从后面开始找，索引为6;
+
+console.log(nums.indexOf(3,3)); // 6  从位置3开始向后找
+console.log(nums.lastIndexOf(3,3)) // 2 从位置3开始向前找
+
+console.log(nums.indexOf(6)); // -1  没有找到
+
+var class= {name : 'ruanjian'};
+var students = [{name : 'jozo'}];
+console.log(students.indexOf(class)); //false  非严格相等(不是同一个对象)
+
+var school = [class];
+console.log(school.indexOf(class);); //true 严格相等(同一个对象)
 ```
 
 5.总结
