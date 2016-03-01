@@ -1,15 +1,20 @@
+`contents`
+
+[TOC]
+
+___
+
 > 结合《javascript高级程序设计》《javascript权威指南》《javascript语言精粹》做的一篇关于Array对象的全面解析。分为两篇：基础篇和扩展应用篇。
 
 1.概念及特点
 ----------
 数组是值的有序集合，每个值称为一个元素，每个元素在数组中有特定位置，以数字表示，称为索引，JavaScript中的数组是一个类数组的对象，虽然在性能上比真正的数组会慢，但它使用起来更方便。
+
 | 特点 | 说明|
 | ------------- |-------------|
 | 元素类型任意性 | 数组元素可以是基础数据类型，对象，也可以是数组 |
 | 动态性| 根据需要它们会增长或缩减，并且在变化时无需重新分配内存空间|
-| 稀疏性 | 数组元素的索引不一定是连续的，它们之间可以有空缺，|
-
-
+| 稀疏性 | 数组元素的索引不一定是连续的，它们之间可以有空缺，|  
 
 2.创建方式
 ----------
@@ -75,6 +80,7 @@ b.删除整个数组对象
 3.常用方法属性详解
 ----------
 其实上面的知识点不讲我们都差不多都知道的。但是数组的一些方法属性我们虽然知道但是却不会用，或是总是忘记该怎么用，因为它的方法属性也很多，我们来分析下各个方法的特点：
+
 | 常用方法| 说明|返回值|影响原数组|
 | -|-|-|-|
 |`1.join()`|使用不同的分隔符将数组转换成包含分隔符的字符串|转换后的字符串 |F |
@@ -83,7 +89,7 @@ b.删除整个数组对象
 | `4.concat()`|将传递给该方法的每一个参数添加到原数组中|修改后的数组副本 |F |
 | `5.slice()`|获取当前数组中的一或多个元素创建一个新的数组 |返回新的数组|F |
 | `6.splice()`|通过传递参数不同，可实现数组的增删改 |新的数组|T |
-| `7.push()/pop()`|两个数组的栈方法（后进先出），在数组的末尾增加或删除数组 |`pop()`返回数组长度，`push()`返回被删除的元素| T|
+| `7.push()/pop()`|两个数组的栈方法（后进先出），在数组的末尾增加或删除数组 |`push()`返回数组长度，`pop()`返回被删除的元素| T|
 | `8.unshift()/shift()`|两个数组的堆方法（先进先出），在数组的前端增加或删除数组 |`unshift()`返回数组长度，`shift()`返回删除的元素|T |
 
 **3.1 `join()`方法**
@@ -122,6 +128,7 @@ b.删除整个数组对象
 
 默认的sort()方法以字母表顺序进行排序，这有时也不是最佳方案，因此我们可以传递一个函数类型的参数作为比较函数，改变排序方式，以便我们确定哪个值在前面。
 比较函数：接受两个参数，函数的返回值决定数组的排序方式。
+
 | 返回值| 排序方式|
 | -|-|
 |负数| 从小到大|
@@ -326,31 +333,32 @@ ECMAScript定义了9个操作数组的数组方法:
     smallValue = a.filter(function(value){return value < 3;});// [1,2]
  
 注意：filter()会跳过稀疏数组中缺少的元素，他的返回数组总是稠密的。下面的方式可以压缩稀疏数组的看空缺：
-
+```javascript
     var a = [1,,3,,5];//有两个空缺元素
     Var uglify = a.filter(function(){return true;}); //[1,3,5]
+```
     
 还可以过滤undefined和null的元素：
-
+```javascript
     var a = [1,undefined,3,,null,5];//有两个空缺元素
     Var uglify = a.filter(function(value){
         return value != undefined && value != null;
     }); //[1,3,5]
-
+```
 **4.4 `every(),some()`**
 `every()：`对数组的每一项运行给定的函数，如果该函数对数组的每一项都返回true，则返回true,注意是`每一项`，有一项为false则为false.
-
+```javascript
     var nums = [1,2,3,4,5];
     var bigresult = nums.every(function(value){return value > 2}); // false 不全大于2
     var result = nums.every(function(value){return value > 0}); //true 全部大于0
-
+```
 
 `some()：`对数组的每一项运行给定的函数，如果该函数对数组的`任一项`返回true，则返回true。
-
+```javascript
     var nums = [1,2,3,4,5];
     var bigresult = nums.every(function(value){return value > 2}); // true 有大于2的元素
     var result = nums.every(function(value){return value < 0}); //false 全部大于0
-
+```
 注意：在数组是空数组时，every()返回true,some()返回false
 
 ![clipboard.png](/img/bVlrF0)
@@ -360,11 +368,13 @@ ECMAScript定义了9个操作数组的数组方法:
 
 这两个方法都是接收两个参数，一个是在每项上调用的函数，另一个是作为遍历的初始值。调用的函数又接收四个参数，分别是：前一个值，当前值，索引，数组对象。这个函数的返回值都会自动作为下一次遍历的函数的第一个参数。若未指定初始值，第一次遍历发生在数组的第二项上，因此第一个参数就是数组第一项，第二个参数就是数组的第二项。我们来个求和运算：
 
+```javascript
     var nums = [1,2,3,4,5];
     nums.reduce(function(pre,cur,index,ary){return pre + cur;}); // 15 
     
     //指定初始值,则第一个参数就是初始值，第二个参数就是数组第一项
     nums.reduce(function(pre,cur,index,ary){return pre + cur;},10); 25
+```
 
 在简单的数字元算上，reduce()和reduceRight()除了顺序不同，其他的完全相同。
 
@@ -373,6 +383,7 @@ ECMAScript定义了9个操作数组的数组方法:
 两个方法都都返回找到的元素的第一次出项的位置（索引），在没有找到的情况下返回 -1 。
 要注意的是：在检索时会与数组的每一项进行全等的比较，也就是必须严格相等（===）。
 
+```javascript
     var nums = [1,2,3,4,5,4,3,2,1];
     console.log(nums.indexOf(3)); // 2  索引为2
     console.log(nums.lastIndexOf(3)) // 6 从后面开始找，索引为6;
@@ -388,6 +399,7 @@ ECMAScript定义了9个操作数组的数组方法:
     
     var school = [class];
     console.log(school.indexOf(class);); //true 严格相等(同一个对象)
+```
 
 5.总结
 ----------
