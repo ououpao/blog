@@ -1,8 +1,3 @@
-`contents`
-
-[TOC]
-
-___
 
 > 结合《javascript高级程序设计》《javascript权威指南》《javascript语言精粹》做的一篇关于Array对象的全面解析。分为两篇：基础篇和扩展应用篇。
 
