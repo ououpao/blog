@@ -177,5 +177,5 @@ Object.getOwnPropertyDescriptor(man, '_name')
 
 但是，如果使用Object.defineProperty给对象新增一个属性但是没有指定`configurable`, `Enumerable`, `Writable`的话，那这几个值都为false;
 
-[1]: /home/naraku/code/github/blog/assets/imgs/descriptor.png
-[2]: /home/naraku/code/github/blog/assets/imgs/descriptor2.png
+[1]: https://github.com/callmeJozo/blog/raw/master/assets/imgs/descriptor.png
+[2]: https://github.com/callmeJozo/blog/raw/master/assets/imgs/descriptor2.png
