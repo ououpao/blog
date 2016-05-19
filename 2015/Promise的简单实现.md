@@ -30,53 +30,39 @@ promise模式在任何时刻都有三种状态：已完成（resolved），未�
 通过创建一个Promise构造函数来实现promise模式:
 ```javascript
 //constructor
-var Promise = function() {
+var _Promise = function() {
     this.callbacks = [];
 }
-
-Promise.prototype = {
+_Promise.prototype = {
     construct: Promise,
     resolve: function(result) {
         this.complete("resolve", result);
     },
-
     reject: function(result) {
         this.complete("reject", result);
     },
-
     complete: function(type, result) {
         while (this.callbacks[0]) {
-            this.callbacks.shift()[type](result);
+            this.callbacks.shift()[type](result, this);
         }
     },
-
     then: function(successHandler, failedHandler) {
         this.callbacks.push({
             resolve: successHandler,
             reject: failedHandler
         });
-
         return this;
     }
 }
-
-// test
-var promise = new Promise();
-
-var delay1 = function() {
-    setTimeout(function() {
-        promise.resolve('数据1');
-    }, 1000);
+window.Promise = function(fn){
+    if(typeof fn != 'function'){
+        throw new TypeError('need a function!')
+    }
+    var promise = new _Promise();
+    fn.call(this, promise);
     return promise;
-};
+}
 
-var callback1 = function(re) {
-
-    re = re + '数据2';
-    console.log(re);
-};
-
-delay1().then(callback1)
 ```
 代码分析
 ----------
@@ -88,33 +74,27 @@ delay1().then(callback1)
  - resolve: 请求成功时执行的方法
  - reject:请求失败时执行的方法
  - complete: 执行回调
- - then：绑定回调函数
+ - then：绑定回调函数(需要返回promise本身，用于链式调用);
 
+最后提供了一个全局的Promise包装函数；
 **测试：**
 ```javascript
-var promise = new Promise();
-
-var delay1 = function() {
+// test
+var delay = function(promise) {
     setTimeout(function() {
         promise.resolve('数据1');
     }, 1000);
-    return promise;
 };
 
-var callback1 = function(re) {
-
+var callback1 = function(re, promise) {
     re = re + '数据2';
-    console.log(re);
     promise.resolve(re);
 };
-
 var callback2 = function(re) {
-
     console.log(re + '数据3');
 
 };
-
-delay1().then(callback1).then(callback2);
+Promise(delay).then(callback1).then(callback2);
 ```
 
 **结果：**
@@ -125,32 +105,31 @@ delay1().then(callback1).then(callback2);
 **分析：**
 ```javascript
 //第一步
-var delay1 = function() {
+var delay = function(promise) {
     setTimeout(function() {
         promise.resolve('数据1');
     }, 1000);
-    return promise;
 };
 ```
 
-这个函数通过setTimeout方法，异步传递一个数据1，并返回一个promise对象(必须)。
+这个函数通过setTimeout执行异步的操作，异步传递一个`数据1`, 这个函数将被Promise包装，会自动获得一个promise参数对象；
 ```javascript    
 //第二步
-var callback1 = function(re) {
-
+var callback1 = function(re, promise) {
     re = re + '数据2';
-    console.log(re);
     promise.resolve(re);
 };
+var callback2 = function(re， promise) {
+    console.log(re + '数据3');
+};
 ```
-
-callback1和callback2都是要通过then方法注册的回调函数，其中callback1通过resolve方法把数据往下传递。
+定义两个回调处理函数，callback1和callback2都是要通过then方法注册的回调函数，其中callback1通过resolve方法把数据往下传递， 两个函数都将获得一个promise参数对象。
 ```javascript
 //第三步
-delay1().then(callback1).then(callback2);
+Promise(delay).then(callback1).then(callback2);
 ```
 
-delay1()方法执行完，因为返回了一个promise对象，所以可以再调用then()方法为delay1()的setTimeout异步执行操作指定回调函数, 又因为then()方法也返回的是promise对象，所以还可以再调用then方法
+delay()方法执行完，因为返回了一个promise对象，所以可以再调用then()方法为delay()的setTimeout异步执行操作指定回调函数, 又因为then()方法也返回的是promise对象，所以还可以再调用then方法
 ```javascript
 //第四步
 setTimeout(function() {
