@@ -94,5 +94,71 @@ function getResponseSize(url) {
 }
 ```
 
+你可以看到为了创建一个异步处理的循环，我不得不在`processResult`函数里调用了它自己本身，这让我感觉自己很聪明，但是，和大多数‘聪明’的代码一样，你必须花很长的时间紧盯着它去弄明白它用来做什么的，就好像你盯着那些90年代的魔幻照片一样。
+
+让我们用`async`函数来重写上面的功能：  
+```javascript
+async function getResponseSize(url) {
+  const response = await fetch(url);
+  const reader = response.body.getReader();
+  let result = await reader.read();
+  let total = 0;
+
+  while (!result.done) {
+    const value = result.value;
+    total += value.length;
+    console.log('Received chunk', value);
+    // get the next result
+    result = await reader.read();
+  }
+
+  return total;
+}
+```
+
+所有的‘聪明’的代码都不见了。现在新的异步循环使用了可靠的，看起来无趣的`while`循环来代替，这使我感觉非常的整洁。更多的是，在将来，我们将会使用[async iterators](https://github.com/tc39/proposal-async-iteration),它将会使用`for of`循环来代替`while`循环，那这讲会变得更加整洁！
+
+### Async 函数的其他语法
+
+我们已经看过了`async function() {} `的使用方式，但是`async`关键字还可以用于其他的函数语法中。
+
+##### 箭头函数
+```javascript
+// map some URLs to json-promises
+const jsonPromises = urls.map(async url => {
+  const response = await fetch(url);
+  return response.json();
+});
+```
+
+##### 对象方法
+```javascript
+const storage = {
+  async getAvatar(name) {
+    const cache = await caches.open('avatars');
+    return cache.match(`/avatars/${name}.jpg`);
+  }
+};
+
+storage.getAvatar('jaffathecake').then(…);
+```
+
+##### 类方法
+```javascript
+class Storage {
+  constructor() {
+    this.cachePromise = caches.open('avatars');
+  }
+
+  async getAvatar(name) {
+    const cache = await this.cachePromise;
+    return cache.match(`/avatars/${name}.jpg`);
+  }
+}
+
+const storage = new Storage();
+storage.getAvatar('jaffathecake').then(…);
+```
+
 
 
