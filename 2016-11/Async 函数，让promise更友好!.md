@@ -1,6 +1,8 @@
 > [原文链接](https://developers.google.com/web/fundamentals/getting-started/primers/async-functions?utm_source=javascriptweekly&utm_medium=email)
+> 
+> 另，断断续续翻译了好几天，在发表的时候去搜索了下有没人翻译了，因为这确实是篇好文章。还真有：[文章链接](http://www.zcfy.cc/article/async-functions-making-promises-friendly-1566.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)，看了下，这篇翻译的专业些，大家可以去看看。
 
-Async 函数是一个非常神奇的东西，它将会在`Chrome 55`中得到默认支持。它允许你书写基于`promise`的代码，但它看起来就跟同步的代码一样，而且不会阻塞线程。所以，它让你的异步代码看起来并没有那么"聪明"却更具有可读性。   
+Async 函数是一个非常了不起的东西，它将会在`Chrome 55`中得到默认支持。它允许你书写基于`promise`的代码，但它看起来就跟同步的代码一样，而且不会阻塞主线程。所以，它让你的异步代码看起来并没有那么"聪明"却更具有可读性。   
 
 Async 函数的代码示例：  
 ```javascript
@@ -48,7 +50,7 @@ async function logFetch(url) {
 
 可以看到代码行数和上例一样，但是使用`async`函数的方式使得所有的回调函数都不见了！这让我们的代码非常容易阅读，特别是那些对`promise`不是特别熟悉的同学。
 
-> :star: 提示: 你`await`的任何值都是通过`Promise.resolve()`来传递的，所以你可以安全放心地使用非原生的`promise`.
+> :star: 提示: 你`await`的任何值都是通过`Promise.resolve()`来传递的，所以你可以安全地使用非本地的`promise`.
 
 ### Async 函数的返回值
 
@@ -64,20 +66,20 @@ async function hello() {
   return 'world';
 }
 ```
-当执行`hello()`时，返回一个执行成功并且传递的值为`world`的`promise`.
+当执行`hello()`时，返回一个成功状态，并且传递的值为`world`的`promise`.
 ```javascript
 async function foo() {
   await wait(500);
   throw Error('bar');
 }
 ```
-当执行`hello()`时，返回一个执行失败并且传递的值为`Error('bar')`的`promise`.
+当执行`hello()`时，返回一个失败状态，并且传递的值为`Error('bar')`的`promise`.
 
-### 示例2： 流式地接收响应数据
+### 示例2： 响应流
 
-在更复杂点的案例中, `async`函数更能体现其优越性。假设我们想要在输出`chunks`数据时处理响应信息， 并返回最终的信息长度。  
+在更复杂点的案例中, `async`函数更能体现其优越性。假设我们想要在记录`chunks`数据时将其变成响应流， 并返回最终的信息长度。  
 
-> :star: 提示: "输出`chunks`" 从我口里说出来让我感觉很别扭.
+> :star: 提示: "记录`chunks`" 让我感觉很别扭.
 
 下面是使用`promise`的方式：  
 
@@ -100,7 +102,7 @@ function getResponseSize(url) {
 }
 ```
 
-你可以看到为了创建一个异步处理的循环，我不得不在`processResult`函数里调用了它自己本身，这让我感觉自己很聪明，但是，和大多数‘聪明’的代码一样，你必须花很长的时间紧盯着它去弄明白它用来做什么的，就好像你盯着那些90年代的魔幻照片一样。
+看清楚了，我是 promise “地下党” Jake Archibald。看到我是怎样在它内部调用 processResult 并建立异步循环的了吗？这样写让我觉得自己“很聪明”。但是正如大多数“聪明的”代码一样，你不得不盯着它看很久才能搞清楚它在做什么，就像九十年代的那些魔眼照片一样。[引用](http://www.zcfy.cc/article/async-functions-making-promises-friendly-1566.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)
 
 让我们用`async`函数来重写上面的功能：  
 ```javascript
@@ -122,7 +124,7 @@ async function getResponseSize(url) {
 }
 ```
 
-所有的‘聪明’的代码都不见了。现在新的异步循环使用了可靠的，看起来无趣的`while`循环来代替，这使我感觉非常的整洁。更多的是，在将来，我们将会使用[async iterators](https://github.com/tc39/proposal-async-iteration),它将会使用`for of`循环来代替`while`循环，那这讲会变得更加整洁！
+所有的"聪明"的代码都不见了。现在新的异步循环使用了可靠的，看起来普通的`while`循环来代替，这使我感觉非常的整洁。更多的是，在将来，我们将会使用[async iterators](https://github.com/tc39/proposal-async-iteration),它将会使用`for of`循环来代替`while`循环，那这讲会变得更加整洁！
 
 > :star: 提示:  我对`streams`比较有好感。如果你对`streams`不太熟悉，可以看看我的[指南](https://jakearchibald.com/2016/streams-ftw/#streams-the-fetch-api)
 
@@ -172,9 +174,9 @@ storage.getAvatar('jaffathecake').then(…);
 
 > :star: 提示: 类的 `constructors`和`getters/settings`不能是 `async` 函数。 
 
-### 注意！请避太过顺序性免代码
+### 注意！请避免太过强调顺序
 
-尽管你正在写的代码看起来是同步的，但请确保你没有错失平行处理的机会。
+尽管你正在写的代码看起来是同步的，但请确保你没有错失并行处理的机会。
 
 ```javascript
 async function series() {
@@ -217,11 +219,11 @@ function logInOrder(urls) {
 }
 ```
 
-Yeah, 这达到了目的。我正在使用`reduce`来处理一串的`promise`，我太聪明了。这是一个如此`聪明`的代码，但我们最好不要这样做。
+Yeah, 这达到了目的。我正在用`reduce`来处理一串的`promise`，我太"聪明"了。这是一个如此"聪明"的代码，但我们最好不要这样做。
 
 但是，当把上面的代码转换成使用 `async`函数来实现时，它看起来太有顺序了，以至于会使我们很迷惑：  
 
-**:-1:  不推荐** - 太顺序了
+**:-1:  不推荐** - 过于强调先后顺序
 ```javascript
 async function logInOrder(urls) {
   for (const url of urls) {
@@ -233,7 +235,7 @@ async function logInOrder(urls) {
 
 看起来整洁多了，但是我的第二个请求只有在第一个请求被完全处理完成之后才会发出去，以此类推。这个比上面那个`promise`的实例慢多了。幸好这还有一个中立的方案：  
 
-**:+1:  推荐** - 很好而且串行
+**:+1:  推荐** - 很好而且并行
 
 ```javascript
 async function logInOrder(urls) {
@@ -250,9 +252,7 @@ async function logInOrder(urls) {
 }
 ```
 
-In this example, the URLs are fetched and read in parallel, but the "smart" reduce bit is replaced with a standard, boring, readable for-loop.
-
-在这个例子中，全部的url一个接一个被请求和处理，但是那个'聪明的'的`reduce`被标准的，无趣的和更具可读性的`for loop` 循环取代了。
+在这个例子中，全部的url一个接一个被请求和处理，但是那个'聪明的'的`reduce`被标准的，普通的和更具可读性的`for loop` 循环取代了。
 
 
 ### 浏览器兼容性和解决方法
@@ -299,8 +299,4 @@ const slowEcho = createAsyncFunction(function*(val) {
 一旦所有浏览器都支持`async`函数了，请在所有返回值是`promise`的函数上使用`async`！因为它不仅可以使你的代码更`tider`， 而且它确保了`async`函数 总是返回一个 `promise` 。
 
 [回到 2014 年](https://jakearchibald.com/2014/es7-async-functions/),我对`async`函数的出现感到非常激动, 现在很高兴看到它们在浏览器中被支持了。Whoop!
-
-
-
-
 
