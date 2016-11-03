@@ -15,7 +15,9 @@ async function myFirstAsyncFunction() {
 ```
 
 如果你在一个函数声明的的前面使用`async`关键字，那你就可以在这个函数内使用`await`。当你去`await`一个`promise`的时候，这个函数将会以非阻塞的方式暂停，直到`promise`处于`settled`状态。如果这个`Promise`返回的是成功的状态，你将会得到返回值，如果返回的是失败的状态，那失败的信息将会被抛出。
+
 > :star: 提示: 如果你对`promises`不熟悉，请查看我们的[promises指南](https://developers.google.com/web/fundamentals/getting-started/primers/promises)
+
 ### 示例1： 打印响应信息
 
 假设我们想要请求一个URL然后把响应信息打印出来，下面是使用`promise`的示例代码：  
@@ -170,9 +172,7 @@ storage.getAvatar('jaffathecake').then(…);
 
 > :star: 提示: 类的 `constructors`和`getters/settings`不能是 `async` 函数。 
 
-### Careful! Avoid going too sequential
-
-### 注意！请避免惯性思维
+### 注意！请避太过顺序性免代码
 
 尽管你正在写的代码看起来是同步的，但请确保你没有错失平行处理的机会。
 
