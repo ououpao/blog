@@ -1,6 +1,6 @@
 > [原文链接](https://developers.google.com/web/fundamentals/getting-started/primers/async-functions?utm_source=javascriptweekly&utm_medium=email)
 > 
-> 另，断断续续翻译了好几天，在发表的时候去搜索了下有没人翻译了，因为这确实是篇好文章。还真有：[文章链接](http://www.zcfy.cc/article/async-functions-making-promises-friendly-1566.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)，看了下，这篇翻译的专业些，大家可以去看看。
+> 另，断断续续[翻译了好几天](https://github.com/kraaas/blog/blob/master/2016-11/Async%20%E5%87%BD%E6%95%B0%EF%BC%8C%E8%AE%A9promise%E6%9B%B4%E5%8F%8B%E5%A5%BD!.md)，在发表的时候去搜索了下有没人翻译了，因为这确实是篇好文章。还真有：[文章链接](http://www.zcfy.cc/article/async-functions-making-promises-friendly-1566.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)，看了下，这篇翻译的专业些，大家可以去看看。
 
 Async 函数是一个非常了不起的东西，它将会在`Chrome 55`中得到默认支持。它允许你书写基于`promise`的代码，但它看起来就跟同步的代码一样，而且不会阻塞主线程。所以，它让你的异步代码看起来并没有那么"聪明"却更具有可读性。   
 
