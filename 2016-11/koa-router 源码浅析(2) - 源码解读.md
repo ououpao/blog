@@ -1,15 +1,19 @@
-> 上一篇主要将koa-router的整体代码结构和大概的执行流程画了出来，画的不够具体。那这篇主要讲koa-router中的几处的关键代码解读一下。
+> [上一篇](https://github.com/kraaas/blog/issues/5)主要将`koa-router`的整体代码结构和大概的执行流程画了出来，画的不够具体。那这篇主要讲`koa-router`中的几处的关键代码解读一下。
 
 读代码首先要找到入口文件，那几乎所有的`node`模块的入口文件都会在`package.json`文件中的`main`属性指明了。`koa-router`的入口文件就是`lib/router.js`。
 
-### 第三方模块
+## 第三方模块
 首先先讲几个第三方的node模块了解一下，因为后面的代码讲解中会用到，不去看具体实现，只要知道其功能就行：  
-**koa-compose:**提供给它一个中间件数组， 返回一个顺序执行所有中间件的执行函数。 
-**methods：**node中支持的http动词，就是http.METHODS，可以在终端输出看看。  
-**path-to-regexp：**将路径字符串转换成强大的正则表达式，还可以输出路径参数。
+**[koa-compose:](https://github.com/koajs/compose)**  
+提供给它一个中间件数组， 返回一个顺序执行所有中间件的执行函数。 
+**[methods](https://github.com/jshttp/methods)：**  
+node中支持的http动词，就是http.METHODS，可以在终端输出看看。  
+**[path-to-regexp](https://github.com/pillarjs/path-to-regexp)：**  
+将路径字符串转换成强大的正则表达式，还可以输出路径参数。
 
 ## Router & Layer
-![](https://github.com/kraaas/blog/raw/master/assets/imgs/koa-router3.png)
+![](https://github.com/kraaas/blog/raw/master/assets/imgs/koa-router3.png)  
+
 `Router` 和 `Layer` 分别是两个构造函数，分别在`router.js` 和 `layer.js`中，`koa-router`的所有代码也就在这两个文件中，可以知道它的代码量并不是很多。  
 
 **Router: 创建管理整个路由模块的实例**
