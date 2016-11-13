@@ -9,7 +9,7 @@
 **path-to-regexp：**将路径字符串转换成强大的正则表达式，还可以输出路径参数。
 
 ## Router & Layer
-![](https://github.com/callmeJozo/blog/raw/master/assets/imgs/koa-router3.png)
+![](https://github.com/kraaas/blog/raw/master/assets/imgs/koa-router3.png)
 `Router` 和 `Layer` 分别是两个构造函数，分别在`router.js` 和 `layer.js`中，`koa-router`的所有代码也就在这两个文件中，可以知道它的代码量并不是很多。  
 
 **Router: 创建管理整个路由模块的实例**
